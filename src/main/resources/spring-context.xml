@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	  http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<bean id="helloWorldResource" class="com.github.florinn.samples.resources.HelloWorldResource" scope="prototype" />
+
+	<sec:http create-session="stateless" entry-point-ref="restAuthenticationEntryPoint">
+		<sec:http-basic />
+		<sec:anonymous enabled='false' />
+	</sec:http>
+
+	<bean id="passthruAuthProvider"	class="com.github.florinn.samples.security.PassthruAuthProvider" />
+	<bean id="authenticator" class="com.github.florinn.samples.security.DropwizardAuthenticator" />
+
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider ref="passthruAuthProvider" />
+	</sec:authentication-manager>
+
+</beans>
